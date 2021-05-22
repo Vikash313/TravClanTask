@@ -1,11 +1,18 @@
 import React,{useEffect} from 'react'
 import * as apiService from "../apiService/api"
+import {fetchCustomerData} from '../actions/index'
+import {useSelector, useDispatch} from 'react-redux'
 
 const ViewCustomers = () => {
 
+    const custList = useSelector(state => state.custReducer.list)
+    const dispatch = useDispatch()
+    console.log("data",custList)
+    
+    //API Function
     async function getData(){
         const response = await apiService.fetchData()
-        console.log("response", response.data)
+        dispatch(fetchCustomerData(response.data))
     }
 
 
