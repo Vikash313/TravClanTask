@@ -4,10 +4,8 @@ import {fetchCustomerData} from '../actions/index'
 import {useSelector, useDispatch} from 'react-redux'
 import MaterialTable from 'material-table'
 import Avatar from '@material-ui/core/Avatar';
-import {TableBody, TableRow, TableCell }  from '@material-ui/core';
 import { useHistory } from 'react-router'
-
-
+import Button from '@material-ui/core/Button';
 
 
 const ViewCustomers = () => {
@@ -35,26 +33,30 @@ const ViewCustomers = () => {
     console.log("imageUrl", imageUrl)
 
 
-    const handleClick = () => {
-        history.push("/single-customer")
-        console.log("clicked")
+    const handleClick = (row) => {
+        console.log("row", row)
+        history.push({pathname: "/single-customer", state:row})
     }
 
    const columns = [
        {
-           title:"Avatar",
-          render:(row) => <i onClick={handleClick}><Avatar ><img src={imageUrl}/></Avatar></i>
+           title:"Id",
+           field:"id"
        },
        {
-           title:"Amount",
-           field:"bids.map((data) => {data.amount})"
+           title:"Action",
+           render: (row) => <Button variant="outlined" onClick={() => handleClick(row)}>View</Button>
+       },
+       {
+           title:"Avatar",
+          render:(row) => <Avatar style={{cursor:"pointer"}}  src={imageUrl[0]} />
        },
         {
-            title:"Customer FirstName",
+            title:"FirstName",
             field:"firstname"
         },
         {
-            title:"Customer LastName",
+            title:"LastName",
             field:"lastname"
         },
         { 
@@ -84,10 +86,9 @@ const ViewCustomers = () => {
              sorting: true
              }}  
             />
-            {custList && custList.map((data) => <Avatar src={data.avatarUrl} alt={data.avatarUrl}/> )}
-
         </div>
     )
 }
 
 export default ViewCustomers
+//{custList && custList.map((data) => <Avatar src={data.avatarUrl} alt={data.avatarUrl}/> )}
